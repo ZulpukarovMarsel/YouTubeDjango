@@ -30,6 +30,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'social_django'
 
 ]
 
@@ -75,9 +76,18 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 AUTHENTICATION_BACKENDS = [
-    'allauth.account.auth_backends.AuthenticationBackend',
-
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 ]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['profile', 'email']
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/api/v1/'
+
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/error/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
 LOGIN_REDIRECT_URL = '/api/v1/users/accounts/profile/'
 LOGIN_URL = 'api/v1/users/accounts/login/'
 LOGOUT_URL = 'api/v1/users/accounts/logout/'
@@ -107,6 +117,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
