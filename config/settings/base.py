@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from pathlib import Path
-
+from pyngrok import ngrok
 from config.settings.env_reader import env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -78,15 +78,17 @@ MIDDLEWARE = [
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['profile', 'email']
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/api/v1/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/complete/google-oauth2/'
 
 SOCIAL_AUTH_LOGIN_ERROR_URL = '/error/'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com'
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 LOGIN_REDIRECT_URL = '/api/v1/users/accounts/profile/'
 LOGIN_URL = 'api/v1/users/accounts/login/'
@@ -94,13 +96,18 @@ LOGOUT_URL = 'api/v1/users/accounts/logout/'
 ACCOUNT_LOGIN_REDIRECT_URL = '/api/v1/users/accounts/profile/'
 ACCOUNT_SIGNUP_REDIRECT_URL = '/api/v1/users/accounts/profile/'
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_LOGOUT_ON_GET = True
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        }
+    }
+}
 
 # Настройки шаблонов для использования allauth
 ACCOUNT_TEMPLATE_PREFIX = 'user/account/'
@@ -179,3 +186,8 @@ else:
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+if 'RUN_MAIN' not in os.environ:
+    ngrok_tunnel = ngrok.connect(8000)
+    print(' * Tunnel URL:', ngrok_tunnel.public_url)
