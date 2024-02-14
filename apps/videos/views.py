@@ -1,9 +1,7 @@
-from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 from apps.videos.serializers import *
-from apps.videos.models import Video
-from apps.videos.services import VideoServices
+from apps.videos.services import VideoServices, LikeServices
 
 # Create your views here.
 
@@ -12,4 +10,9 @@ class VideoModelViewSet(ModelViewSet):
     serializer_class = VideoSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+
+class LikeModelViewSet(ModelViewSet):
+    queryset = LikeServices.get_like_models()
+    serializer_class = LikeSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
