@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from rest_framework.viewsets import ModelViewSet
 from apps.videos.serializers import *
-from apps.videos.services import VideoServices, LikeServices
+from apps.videos.services import VideoServices, LikeServices, CommentServices
 
 # Create your views here.
 
@@ -16,3 +16,7 @@ class LikeModelViewSet(ModelViewSet):
     serializer_class = LikeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+class CommentModelViewSet(ModelViewSet):
+    queryset = CommentServices.get_comment_models()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions]

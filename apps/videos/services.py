@@ -1,4 +1,4 @@
-from apps.videos.models import Video, Like
+from apps.videos.models import Video, Like, Comment
 
 
 class VideoServices:
@@ -13,3 +13,7 @@ class LikeServices:
     def get_like_models():
         return Like.objects.all()
 
+class CommentServices:
+    @staticmethod
+    def get_comment_models():
+        return Comment.objects.all()
