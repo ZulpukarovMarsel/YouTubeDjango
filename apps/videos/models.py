@@ -22,3 +22,12 @@ class Like(models.Model):
 
     def __str__(self):
         return f"Like from {self.author} to {self.post}"
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='comments')
+    content = models.TextField()
+    created_date = models.DateTimeField(blank=False, default=now)
+
+    def __str__(self):
+        return f"Comment from {self.author} to {self.content}"
