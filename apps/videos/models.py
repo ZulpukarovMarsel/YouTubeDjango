@@ -17,14 +17,14 @@ class Video(models.Model):
 
 
 class Like(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes_author')
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='likes')
 
     def __str__(self):
         return f"Like from {self.author} to {self.post}"
 
 class Comment(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_author')
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='comments')
     content = models.TextField()
     created_date = models.DateTimeField(blank=False, default=now)

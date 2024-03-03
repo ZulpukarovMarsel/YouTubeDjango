@@ -81,37 +81,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = ['profile', 'email']
-SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/complete/google-oauth2/'
 
-SOCIAL_AUTH_LOGIN_ERROR_URL = '/error/'
-
-
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com'
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
-
-LOGIN_REDIRECT_URL = '/api/v1/users/accounts/profile/'
-LOGIN_URL = 'api/v1/users/accounts/login/'
-LOGOUT_URL = 'api/v1/users/accounts/logout/'
-ACCOUNT_LOGIN_REDIRECT_URL = '/api/v1/users/accounts/profile/'
-ACCOUNT_SIGNUP_REDIRECT_URL = '/api/v1/users/accounts/profile/'
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        # For each OAuth based provider, either add a ``SocialApp``
-        # (``socialaccount`` app) containing the required client
-        # credentials, or list them here:
-        'APP': {
-            'client_id': '233050433695-7k6ao7d5ps6c9comm1tb06i1ur7qn7d3.apps.googleusercontent.com',
-            'secret': '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',
-            'key': ''
-        }
-    }
-}
-
-# Настройки шаблонов для использования allauth
-ACCOUNT_TEMPLATE_PREFIX = 'user/account/'
-SITE_ID = 1
 
 TEMPLATES = [
     {
