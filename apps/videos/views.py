@@ -25,3 +25,4 @@ class CommentModelViewSet(generics.ListAPIView):
     serializer_class = CommentSerializer
     permission_classes = [permissions]
 
+
