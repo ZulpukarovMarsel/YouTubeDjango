@@ -1,7 +1,28 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from apps.user.managers import UserManager
 
-# Create your models here.
+class User(AbstractBaseUser, PermissionsMixin):
+    firstname = models.CharField(max_length=45, verbose_name="Имя")
+    lastname = models.CharField(max_length=45, verbose_name="Фамилия")
+    email = models.EmailField(max_length=255, unique=True, verbose_name='email')
+    image = models.ImageField(blank=True, verbose_name="Аватар", upload_to="user_photo/", default="/user_photo/default_photo"
+                                                                                              "/default_avatar.jpg")
+    is_active = models.BooleanField("Активен", default=True)
+    is_staff = models.BooleanField("Персонал", default=False)
+    data_joined = models.DateTimeField("Дата регистрации", auto_now_add=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+    objects = UserManager()
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+    def __str__(self):
+        return f'{self.email}'
 class Channel(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
