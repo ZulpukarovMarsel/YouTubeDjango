@@ -1,9 +1,9 @@
 from apps.user.models import User
 from django.db import models
 from django.utils.timezone import now
-
+from django.db.models.signals import pre_delete
 from apps.user.models import Channel
-
+from django.dispatch import receiver
 
 # Create your models here.
 
@@ -14,6 +14,9 @@ class Video(models.Model):
     video_file = models.FileField(upload_to='videos/')
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='channel')
     created_date = models.DateTimeField(blank=False, default=now, editable=True)
+@receiver(pre_delete, sender=Video)
+def delete_post_photo(sender, instance, **kwargs):
+    instance.video_file.delete()
 
 
 class Like(models.Model):
