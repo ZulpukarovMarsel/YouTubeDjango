@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from apps.user.managers import UserManager
 
+
 class User(AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=45, verbose_name="Имя")
     lastname = models.CharField(max_length=45, verbose_name="Фамилия")
@@ -24,6 +25,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f'{self.email}'
+
 
 class Channel(models.Model):
     name = models.CharField(max_length=100)
