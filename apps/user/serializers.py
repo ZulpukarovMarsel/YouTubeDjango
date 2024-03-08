@@ -1,10 +1,19 @@
 from rest_framework import serializers
 from apps.user.models import *
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("id", "image", "firstname", "lastname", "email")
+
 class ChannelSerializer(serializers.ModelSerializer):
+    owner = UserSerializer(read_only=True)
+    subscribers = UserSerializer(read_only=True, many=True)
+
     class Meta:
         model = Channel
-        fields = '__all__'
+        fields = ("id", "image", "name", "description", "owner", "subscribers", "created_date")
 
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,18 +1,18 @@
 from apps.videos.models import Video, Like, Comment
 
 
-class VideoServices:
+class VideoService:
     @staticmethod
-    def get_video_models():
+    def get_video_class():
         """
         Получаем все объекты Video из базы данных.
         """
         return Video.objects.all()
 
 
-class LikeServices:
+class LikeService:
     @staticmethod
-    def get_like_models():
+    def get_like_class():
         """
         Получаем все объекты Like из базы данных.
         """
@@ -26,9 +26,9 @@ class LikeServices:
         return Like.objects.filter(video=instance)
 
 
-class CommentServices:
+class CommentService:
     @staticmethod
-    def get_comment_models():
+    def get_comment_class():
         """
         Получаем все объекты Comment из базы данных.
         """

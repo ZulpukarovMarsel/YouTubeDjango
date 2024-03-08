@@ -3,29 +3,26 @@ from rest_framework import generics
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from apps.videos.serializers import *
-from apps.videos.services import VideoServices, LikeServices, CommentServices
+from apps.videos.services import VideoService, LikeService, CommentService
 
 
 class VideoListView(generics.ListCreateAPIView):
-    queryset = VideoServices.get_video_models()
+    queryset = VideoService.get_video_class()
     serializer_class = VideosSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class VideoDetailView(generics.RetrieveAPIView):
-    # queryset = VideoServices.get_video_models()
+    queryset = VideoService.get_video_class()
     serializer_class = VideosSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self):
-        return get_object_or_404(Video, pk=self.kwargs['pk'])
-
+    lookup_field = 'id'
     def retrieve(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
             video_serializer = self.get_serializer(instance)
-            comment_queryset = CommentServices.get_class_video_comment(instance)
+            comment_queryset = CommentService.get_class_video_comment(instance)
             comment_serializer = CommentSerializer(comment_queryset, many=True)
-            like_queryset = LikeServices.get_class_video_like(instance)
+            like_queryset = LikeService.get_class_video_like(instance)
             like_serializer = LikeSerializer(like_queryset, many=True)
 
             data = {
@@ -34,7 +31,7 @@ class VideoDetailView(generics.RetrieveAPIView):
                 'comments': comment_serializer.data,
             }
             return Response(data, status=status.HTTP_200_OK)
-        except VideoServices.get_video_models().DoesNotExist:
+        except VideoService.get_video_class().DoesNotExist:
             return Response({"error": " Видео не найдено"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"error": f"Не удалось получить сведения о видео. {str(e)}"},
@@ -42,12 +39,12 @@ class VideoDetailView(generics.RetrieveAPIView):
 
 
 class LikeModelViewSet(generics.ListCreateAPIView):
-    queryset = LikeServices.get_like_models()
+    queryset = LikeService.get_like_class()
     serializer_class = LikeSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 class CommentModelViewSet(generics.ListCreateAPIView):
-    queryset = CommentServices.get_comment_models()
+    queryset = CommentService.get_comment_class()
     serializer_class = CommentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
