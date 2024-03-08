@@ -5,7 +5,7 @@ from rest_framework import generics, permissions, status, response, exceptions
 from django.contrib.auth import authenticate, hashers
 from apps.user.models import User
 from .serializers import *
-from .services import GetLoginResponseService
+from .services import GetLoginResponseService, ChannelService
 from rest_framework_simplejwt.tokens import RefreshToken
 
 class SignUpAPIView(generics.CreateAPIView):
@@ -66,3 +66,10 @@ class LogoutAPIView(generics.CreateAPIView):
     def get_queryset(self):
         queryset = User.objects.all()
         return queryset
+
+
+class ChannelView(generics.ListCreateAPIView):
+    queryset = ChannelService.get_channel_class()
+    serializer_class = ChannelSerializer
+    permission_classes = [permissions.IsAuthenticated]
+

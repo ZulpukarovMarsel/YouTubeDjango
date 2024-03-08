@@ -28,6 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Channel(models.Model):
+    image = models.ImageField(upload_to="channel_photo")
     name = models.CharField(max_length=100)
     description = models.TextField()
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='channel')
