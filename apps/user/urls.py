@@ -1,6 +1,5 @@
 from django.urls import path, include
-# from social_django.views import auth as social_auth
-
+from apps.user.views import SignUpAPIView
 urlpatterns = [
-    # path('accounts/', include('allauth.urls')),
+    path('sign_up/', SignUpAPIView.as_view(), name='sign_up'),
 ]
