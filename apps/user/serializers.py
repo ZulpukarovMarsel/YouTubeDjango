@@ -9,7 +9,7 @@ class ChannelSerializer(serializers.ModelSerializer):
 class SignUpSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ("image", "firstname", "lastname", "email", "password")
 
 class SignInSerializer(serializers.Serializer):
     email = serializers.CharField()

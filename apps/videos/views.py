@@ -1,7 +1,7 @@
 from rest_framework import permissions, status
 from rest_framework import generics
 from rest_framework.response import Response
-
+from django.shortcuts import get_object_or_404
 from apps.videos.serializers import *
 from apps.videos.services import VideoServices, LikeServices, CommentServices
 
@@ -12,16 +12,19 @@ class VideoListView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 class VideoDetailView(generics.RetrieveAPIView):
-    queryset = VideoServices.get_video_models()
+    # queryset = VideoServices.get_video_models()
     serializer_class = VideosSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return get_object_or_404(Video, pk=self.kwargs['pk'])
 
     def retrieve(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
             video_serializer = self.get_serializer(instance)
             comment_queryset = CommentServices.get_class_video_comment(instance)
-            comment_serializer = CommentSerializer(comment_queryset ,many=True)
+            comment_serializer = CommentSerializer(comment_queryset, many=True)
             like_queryset = LikeServices.get_class_video_like(instance)
             like_serializer = LikeSerializer(like_queryset, many=True)
 
@@ -46,6 +49,6 @@ class LikeModelViewSet(generics.ListCreateAPIView):
 class CommentModelViewSet(generics.ListCreateAPIView):
     queryset = CommentServices.get_comment_models()
     serializer_class = CommentSerializer
-    permission_classes = [permissions]
+    permission_classes = [permissions.IsAuthenticated]
 
 
