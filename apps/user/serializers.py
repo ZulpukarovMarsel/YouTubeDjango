@@ -16,3 +16,6 @@ class SignInSerializer(serializers.Serializer):
     password = serializers.CharField(
         style={"input_type": "password"}, help_text="min length 8", min_length=8
     )
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()

@@ -46,3 +46,23 @@ class SignInAPIView(generics.CreateAPIView):
         return response.Response(
             data=GetLoginResponseService.get_login_response(user, request)
         )
+
+class LogoutAPIView(generics.CreateAPIView):
+    # API  для выхода
+
+    serializer_class = LogoutSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            token = RefreshToken(serializer.validated_data['refresh'])
+            token.blacklist()
+            return response.Response(data={"detail": "Успешно!", "status": status.HTTP_200_OK})
+        except Exception as e:
+            return response.Response(data={"error": f"{e}"}, status=status.HTTP_204_NO_CONTENT)
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        return queryset
