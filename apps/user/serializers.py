@@ -11,3 +11,8 @@ class SignUpSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class SignInSerializer(serializers.Serializer):
+    email = serializers.CharField()
+    password = serializers.CharField(
+        style={"input_type": "password"}, help_text="min length 8", min_length=8
+    )

@@ -28,3 +28,21 @@ class SignUpAPIView(generics.CreateAPIView):
             return response.Response(
                 data={"detail": "Пользователь с данной электронной почтой существует!",
                       "status": status.HTTP_409_CONFLICT})
+
+
+class SignInAPIView(generics.CreateAPIView):
+    # API для входа
+
+    serializer_class = SignInSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user = authenticate(**serializer.validated_data)
+        if not user:
+            raise exceptions.AuthenticationFailed
+
+        return response.Response(
+            data=GetLoginResponseService.get_login_response(user, request)
+        )
