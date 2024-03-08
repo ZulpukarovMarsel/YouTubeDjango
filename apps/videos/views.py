@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from apps.videos.serializers import *
 from apps.videos.services import VideoServices, LikeServices, CommentServices
 
-# Create your views here.
 
 class VideoListView(generics.ListCreateAPIView):
     queryset = VideoServices.get_video_models()
