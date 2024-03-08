@@ -5,17 +5,19 @@ from django.db.models.signals import pre_delete
 from apps.user.models import Channel
 from django.dispatch import receiver
 
-# Create your models here.
-
-
 class Video(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     video_file = models.FileField(upload_to='videos/')
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='channel')
     created_date = models.DateTimeField(blank=False, default=now, editable=True)
+
 @receiver(pre_delete, sender=Video)
 def delete_post_photo(sender, instance, **kwargs):
+    """
+    Сигнал, вызываемый перед удалением экземпляра Video.
+    Удаляет связанный файл видео при удалении записи о видео.
+    """
     instance.video_file.delete()
 
 
@@ -24,7 +26,7 @@ class Like(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE, related_name='likes')
 
     def __str__(self):
-        return f"Like from {self.author} to {self.post}"
+        return f"Like from {self.author} to {self.video}"
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_author')

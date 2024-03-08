@@ -1,10 +1,13 @@
 from rest_framework import serializers
 from apps.videos.models import *
+from apps.user.serializers import ChannelSerializer
+
 
 class VideosSerializer(serializers.ModelSerializer):
+    channel = ChannelSerializer(read_only=True)
     class Meta:
         model = Video
-        fields = '__all__'
+        fields = ('id', 'title', 'description', 'video_file', 'channel', 'created_date')
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
