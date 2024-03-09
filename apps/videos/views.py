@@ -1,14 +1,14 @@
-from rest_framework import permissions, status
-from rest_framework import generics
+from rest_framework import permissions, status, generics, filters
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from apps.videos.serializers import *
 from apps.videos.services import VideoService, LikeService, CommentService
 
-
 class VideoListView(generics.ListCreateAPIView):
+    search_fields = ('title',)
     queryset = VideoService.get_video_class()
     serializer_class = VideosSerializer
+    filter_backends = (filters.SearchFilter,)
     permission_classes = [permissions.IsAuthenticated]
 
 class VideoDetailView(generics.RetrieveAPIView):

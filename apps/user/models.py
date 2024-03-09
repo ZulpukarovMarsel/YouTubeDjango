@@ -7,7 +7,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     firstname = models.CharField(max_length=45, verbose_name="Имя")
     lastname = models.CharField(max_length=45, verbose_name="Фамилия")
     email = models.EmailField(max_length=255, unique=True, verbose_name='email')
-    image = models.ImageField(blank=True, verbose_name="Аватар", upload_to="user_photo/", default="/user_photo"
+    image = models.ImageField(blank=True, verbose_name="Аватар", upload_to="user_photo/avatarki", default="/user_photo"
                                                                                                   "/default_photo"
                                                                                                   "/default_user.jpg")
     is_active = models.BooleanField("Активен", default=True)
@@ -28,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Channel(models.Model):
-    image = models.ImageField(upload_to="channel_photo")
+    image = models.ImageField(upload_to="user_photo/channel_photo")
     name = models.CharField(max_length=100)
     description = models.TextField()
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='channel')
